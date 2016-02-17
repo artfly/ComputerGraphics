@@ -1,11 +1,9 @@
-#include "controlsgroup.h"
-#include "ui_controlsgroup.h"
+#include "controlgroup.h"
+#include "ui_controlgroup.h"
 #include <QGridLayout>
 
-ControlsGroup::ControlsGroup(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ControlsGroup)
-{
+ControlGroup::ControlGroup(QWidget *parent) :
+	QWidget(parent), ui(new Ui::ControlGroup) {
     ui->setupUi(this);
 
     label = new QLabel();
@@ -23,30 +21,25 @@ ControlsGroup::ControlsGroup(QWidget *parent) :
     this->setLayout(layout);
 }
 
-void ControlsGroup::setDefaultValue(int value) {
-    spinBox->setValue(value);
-    slider->setValue(value);
-}
-
-void ControlsGroup::setRange(int from, int to) {
+void ControlGroup::setRange(int from, int to) {
     spinBox->setRange(from, to);
     slider->setRange(from, to);
 }
 
-void ControlsGroup::setText(QString text) {
+void ControlGroup::setText(QString text) {
     label->setText(text);
 }
 
-int ControlsGroup::getValue() {
+int ControlGroup::getValue() {
 	return slider->value();
 }
 
-ControlsGroup::~ControlsGroup()
+ControlGroup::~ControlGroup()
 {
     delete ui;
 }
 
-void ControlsGroup::setValue(int value) {
+void ControlGroup::setValue(int value) {
 	spinBox->setValue(value);
 	slider->setValue(value);
 }

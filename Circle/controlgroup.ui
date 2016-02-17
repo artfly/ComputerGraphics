@@ -2,8 +2,8 @@
  <author/>
  <comment/>
  <exportmacro/>
- <class>ControlsGroup</class>
- <widget class="QWidget" name="ControlsGroup">
+ <class>ControlGroup</class>
+ <widget class="QWidget" name="ControlGroup">
   <property name="geometry">
    <rect>
     <x>0</x>

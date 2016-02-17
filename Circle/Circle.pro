@@ -15,23 +15,23 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     controlpanel.cpp \
-    controlsgroup.cpp \
     circle.cpp \
-    connector.cpp \
     drawpanel.cpp \
-    params.cpp
+    params.cpp \
+    controlgroup.cpp
 
 HEADERS  += mainwindow.h \
     controlpanel.h \
-    controlsgroup.h \
+    ControlGroup.h \
     circle.h \
-    connector.h \
     drawpanel.h \
-    params.h
+    params.h \
+    controlgroup.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
-    controlsgroup.ui \
+    ControlGroup.ui \
     drawpanel.ui \
+    controlgroup.ui
 
 CONFIG += c++11

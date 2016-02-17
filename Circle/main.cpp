@@ -14,6 +14,6 @@ int main(int argc, char *argv[])
 		w.show();
 		return a.exec();
 	}
-	w.saveFile();
+//	w.saveFile();
 	return 0;
 }

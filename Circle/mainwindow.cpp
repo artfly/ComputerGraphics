@@ -13,8 +13,7 @@
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-	ui(new Ui::MainWindow) {
+	QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
 	centralWidget = new QWidget();
@@ -37,16 +36,14 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::createPanels() {
 	controlPanel = new ControlPanel();
 	drawPanel = new DrawPanel();
-	connector = new Connector();
-	connector->attachControlPanel(controlPanel);
-	connector->attachDrawPanel(drawPanel);
+	QObject::connect(controlPanel, SIGNAL(paramsChanged(Params *)),
+					 drawPanel, SLOT(redraw(Params *)));
 	controlPanel->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 }
 
-void MainWindow::createMenus()
-{
-	QAction * openAct = new QAction(tr("&Open"), this);
+void MainWindow::createMenus() {
 	QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
+	QAction * openAct = new QAction(tr("&Open"), this);
 	QAction * saveAct = new QAction(tr("&Save"), this);
 	fileMenu->addAction(saveAct);
 	fileMenu->addAction(openAct);
@@ -77,19 +74,17 @@ void MainWindow::openFile() {
 	int R = circle["R"].toInt();
 	int x = position["x"].toInt();
 	int y = position["y"].toInt();
-	controlPanel->setParams(std::vector<int>{x, y, R});
+	Params * params = new Params(x, y, R);
+	controlPanel->setParams(params);
 
 	QJsonObject panel = jsonObject["panel"].toObject();
 	QJsonObject size = panel["size"].toObject();
-	qWarning() << size;
 	int panelWidth = size["x"].toInt() * 2;
 	int panelHeight = size["y"].toInt() * 2;
 	resize(panelWidth + controlPanel->width(), panelHeight + controlPanel->height());
 }
 
 
-MainWindow::~MainWindow()
-{
-
+MainWindow::~MainWindow() {
     delete ui;
 }

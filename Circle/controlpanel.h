@@ -2,7 +2,8 @@
 #define CONTROLPANEL_H
 
 #include <QGroupBox>
-#include "controlsgroup.h"
+#include "controlgroup.h"
+#include "params.h"
 
 namespace Ui {
 class ControlPanel;
@@ -14,12 +15,12 @@ class ControlPanel : public QGroupBox
 
 public:
 	explicit ControlPanel(QWidget *parent = 0);
-	void setParams(std::vector<int> params);
+	void setParams(Params * params);
     ~ControlPanel();
 public slots:
 	void setValue();
 signals:
-	void paramsChanged(std::vector<int> params);
+	void paramsChanged(Params * params);
 private:
     static const int DEFAULT_COORD = 0;
     static const int DEFAULT_R = 20;
@@ -27,15 +28,15 @@ private:
     static const int FROM_COORD = -1000;
     static const int TO = 1000;
 
-    static constexpr const char * X_TEXT = "Position X";
-    static constexpr const char * Y_TEXT = "Position Y";
-    static constexpr const char * R_TEXT = "R";
-    static constexpr const char * PANEL_NAME = "Controls";
+	static constexpr const char * X_TEXT = "Position X";
+	static constexpr const char * Y_TEXT = "Position Y";
+	static constexpr const char * R_TEXT = "R";
+	static constexpr const char * PANEL_NAME = "Controls";
 
     void createControls();
-    ControlsGroup * xControls;
-    ControlsGroup * yControls;
-    ControlsGroup * rControls;
+	ControlGroup * xControls;
+	ControlGroup * yControls;
+	ControlGroup * rControls;
 
     Ui::ControlPanel *ui;
 };

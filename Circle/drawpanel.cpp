@@ -1,21 +1,18 @@
 #include "drawpanel.h"
 #include "ui_drawpanel.h"
+#include <QDebug>
 
 DrawPanel::DrawPanel(QWidget *parent) :
-	QGroupBox(PANEL_NAME, parent),
-	ui(new Ui::DrawPanel)
-{
+	QGroupBox(PANEL_NAME, parent), ui(new Ui::DrawPanel) {
 	ui->setupUi(this);
 	circle = new Circle(this);
 }
 
-DrawPanel::~DrawPanel()
-{
+DrawPanel::~DrawPanel() {
 	delete ui;
 }
 
-void DrawPanel::paintEvent(QPaintEvent */*event*/)
-{
+void DrawPanel::paintEvent(QPaintEvent */*event*/) {
 	QPainter painter(this);
 	QImage backBuffer(width(), height(), QImage::Format_RGB888);
 
@@ -25,14 +22,13 @@ void DrawPanel::paintEvent(QPaintEvent */*event*/)
 		return;
 	}
 	memset(pubBuffer, 255, backBuffer.byteCount());
-	if (circle)
-	{
-		circle->Draw(&backBuffer);
+	if (circle) {
+		circle->draw(&backBuffer);
 	}
 	painter.drawImage(0,0, backBuffer);
 }
 
-void DrawPanel::redraw(std::vector<int> params) {
+void DrawPanel::redraw(Params * params) {
 	circle->setParams(params);
-	this->update();
+	update();
 }

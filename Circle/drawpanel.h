@@ -4,14 +4,15 @@
 #include <QGroupBox>
 #include <QPainter>
 #include <QImage>
+#include <QString>
 #include "circle.h"
+#include "params.h"
 
 namespace Ui {
 class DrawPanel;
 }
 
-class DrawPanel : public QGroupBox
-{
+class DrawPanel : public QGroupBox {
 	Q_OBJECT
 
 public:
@@ -20,7 +21,7 @@ public:
 signals:
 
 public slots:
-	void redraw(std::vector<int> params);
+	void redraw(Params * params);
 protected:
 	void paintEvent(QPaintEvent *event);
 

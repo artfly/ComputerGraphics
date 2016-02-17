@@ -5,33 +5,30 @@
 #include <iostream>
 
 ControlPanel::ControlPanel(QWidget *parent) :
-	QGroupBox(PANEL_NAME, parent),
-    ui(new Ui::ControlPanel)
-{
+	QGroupBox(PANEL_NAME, parent), ui(new Ui::ControlPanel) {
     ui->setupUi(this);
     createControls();
 }
 
-ControlPanel::~ControlPanel()
-{
+ControlPanel::~ControlPanel() {
     delete ui;
 }
 
 void ControlPanel::createControls() {
-	xControls = new ControlsGroup(this);
+	xControls = new ControlGroup(this);
     xControls->setRange(FROM_COORD, TO);
     xControls->setText(X_TEXT);
-    xControls->setDefaultValue(DEFAULT_COORD);
+	xControls->setValue(DEFAULT_COORD);
 
-	yControls = new ControlsGroup(this);
+	yControls = new ControlGroup(this);
     yControls->setRange(FROM_COORD, TO);
     yControls->setText(Y_TEXT);
-    yControls->setDefaultValue(DEFAULT_COORD);
+	yControls->setValue(DEFAULT_COORD);
 
-	rControls = new ControlsGroup(this);
+	rControls = new ControlGroup(this);
     rControls->setRange(FROM_R, TO);
     rControls->setText(R_TEXT);
-    rControls->setDefaultValue(DEFAULT_R);
+	rControls->setValue(DEFAULT_R);
 
     QVBoxLayout * layout = new QVBoxLayout;
     layout->addWidget(xControls);
@@ -42,16 +39,13 @@ void ControlPanel::createControls() {
 
 
 void ControlPanel::setValue() {
-	std::vector<int> params;
-	params.push_back(xControls->getValue());
-	params.push_back(yControls->getValue());
-	params.push_back(rControls->getValue());
+	Params * params = new Params(xControls->getValue(), yControls->getValue(), rControls->getValue());
 	emit paramsChanged(params);
 }
 
-void ControlPanel::setParams(std::vector<int> params) {
-	xControls->setValue(params[0]);
-	yControls->setValue(params[1]);
-	rControls->setValue(params[2]);
+void ControlPanel::setParams(Params * params) {
+	xControls->setValue(params->getX());
+	yControls->setValue(params->getY());
+	rControls->setValue(params->getR());
 	emit paramsChanged(params);
 }

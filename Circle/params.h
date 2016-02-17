@@ -2,10 +2,12 @@
 #define PARAMS_H
 #include <QVector>
 
-class Params
-{
+class Params {
 public:
-	Params();
+	Params(int x = 0, int y = 0, int r = 20);
+	int getX() const;
+	int getY() const;
+	int getR() const;
 private:
 	QVector<int> params;
 };

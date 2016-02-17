@@ -1,5 +1,5 @@
-#ifndef CONTROLSGROUP_H
-#define CONTROLSGROUP_H
+#ifndef ControlGroup_H
+#define ControlGroup_H
 
 #include <QWidget>
 #include <QLabel>
@@ -7,27 +7,25 @@
 #include <QSlider>
 
 namespace Ui {
-class ControlsGroup;
+class ControlGroup;
 }
 
-class ControlsGroup : public QWidget
-{
+class ControlGroup : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ControlsGroup(QWidget *parent = 0);
+    explicit ControlGroup(QWidget *parent = 0);
     void setText(QString text);
-    void setDefaultValue(int value);
     void setRange(int from, int to);
 	int getValue();
 	void setValue(int value);
-    ~ControlsGroup();
+    ~ControlGroup();
 
 private:
-    Ui::ControlsGroup *ui;
+    Ui::ControlGroup *ui;
     QLabel * label;
     QSpinBox * spinBox;
     QSlider * slider;
 };
 
-#endif // CONTROLSGROUP_H
+#endif // ControlGroup_H
