@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QString>
 #include "controlpanel.h"
 #include "drawpanel.h"
 #include "params.h"
@@ -16,14 +17,16 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+	void saveImage(QString path);
     ~MainWindow();
 public slots:
 private slots:
-	void saveFile();
+	void saveJson();
 	void openFile();
 private:
 	void createMenus();
 	void createPanels();
+	void parseJson(QString path);
     QWidget * centralWidget;
     ControlPanel * controlPanel;
 	DrawPanel * drawPanel;

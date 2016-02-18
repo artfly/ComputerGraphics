@@ -47,20 +47,27 @@ void MainWindow::createMenus() {
 	QAction * saveAct = new QAction(tr("&Save"), this);
 	fileMenu->addAction(saveAct);
 	fileMenu->addAction(openAct);
-	connect(saveAct, SIGNAL(triggered()), this, SLOT(saveFile()));
+	connect(saveAct, SIGNAL(triggered()), this, SLOT(saveJson()));
 	connect(openAct, SIGNAL(triggered()), this, SLOT(openFile()));
 }
 
-void MainWindow::saveFile() {
+void MainWindow::saveImage(QString path) {
 	QString filename = QInputDialog::getText(this, tr("Save as"),
 											 tr("Filename:"), QLineEdit::Normal);
-	if (filename != NULL)
-		this->drawPanel->grab().save(filename);
+	if (filename == NULL)
+		return;
+//		this->drawPanel->grab().save(filename);
+	parseJson(path);
+	drawPanel->grab().save(filename);
 }
 
 void MainWindow::openFile() {
 	QString path = QFileDialog::getOpenFileName(this,
 												tr("Open JSON File"));
+	parseJson(path);
+}
+
+void MainWindow::parseJson(QString path) {
 	QFile file;
 	file.setFileName(path);
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -79,11 +86,45 @@ void MainWindow::openFile() {
 
 	QJsonObject panel = jsonObject["panel"].toObject();
 	QJsonObject size = panel["size"].toObject();
-	int panelWidth = size["x"].toInt() * 2;
-	int panelHeight = size["y"].toInt() * 2;
+	int panelWidth = size["x"].toInt();
+	int panelHeight = size["y"].toInt();
 	resize(panelWidth + controlPanel->width(), panelHeight + controlPanel->height());
 }
 
+void MainWindow::saveJson() {
+	QString filename = QInputDialog::getText(this, tr("Save as"),
+											 tr("Filename:"), QLineEdit::Normal);
+	if (filename == NULL)
+		return;
+	QFile file;
+	file.setFileName(filename);
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+
+	Params * params = controlPanel->getParams();
+
+	QJsonObject position;
+	QJsonObject circle;
+	QJsonArray circles;
+	position["x"] = params->getX();
+	position["y"] = params->getY();
+	position["R"] = params->getR();
+	circle["position"] = position;
+	circles.append(circle);
+
+	QJsonObject panel;
+	QJsonObject size;
+	size["x"] = drawPanel->width();
+	size["y"] = drawPanel->height();
+	panel["size"] = size;
+
+	QJsonObject json;
+	json["circles"] = circles;
+	json["panel"] = panel;
+
+	QJsonDocument document(json);
+	file.write(document.toJson());
+
+}
 
 MainWindow::~MainWindow() {
     delete ui;

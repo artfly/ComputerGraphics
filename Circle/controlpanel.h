@@ -16,6 +16,7 @@ class ControlPanel : public QGroupBox
 public:
 	explicit ControlPanel(QWidget *parent = 0);
 	void setParams(Params * params);
+	Params * getParams() const;
     ~ControlPanel();
 public slots:
 	void setValue();

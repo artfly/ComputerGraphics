@@ -49,3 +49,8 @@ void ControlPanel::setParams(Params * params) {
 	rControls->setValue(params->getR());
 	emit paramsChanged(params);
 }
+
+Params * ControlPanel::getParams() const {
+	Params * params = new Params(xControls->getValue(), yControls->getValue(), rControls->getValue());
+	return params;
+}

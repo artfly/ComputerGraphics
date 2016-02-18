@@ -42,5 +42,4 @@ void Circle::draw(QImage* pBackBuffer) {
 
 void Circle::setParams(Params * params) {
 	this->params = params;
-	qWarning() << this->params->getX();
 }
