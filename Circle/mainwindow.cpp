@@ -88,7 +88,7 @@ void MainWindow::parseJson(QString path) {
 	QJsonObject size = panel["size"].toObject();
 	int panelWidth = size["x"].toInt();
 	int panelHeight = size["y"].toInt();
-	resize(panelWidth + controlPanel->width(), panelHeight + controlPanel->height());
+	resize(panelWidth + controlPanel->width(), panelHeight);
 }
 
 void MainWindow::saveJson() {
