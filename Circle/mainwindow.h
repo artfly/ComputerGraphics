@@ -7,6 +7,7 @@
 #include "controlpanel.h"
 #include "drawpanel.h"
 #include "params.h"
+#include "jsonhandler.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +22,12 @@ public:
     ~MainWindow();
 public slots:
 private slots:
-	void saveJson();
 	void openFile();
+	void saveFile();
+//	void saveJson();
 private:
 	void createMenus();
 	void createPanels();
-	void parseJson(QString path);
     QWidget * centralWidget;
     ControlPanel * controlPanel;
 	DrawPanel * drawPanel;

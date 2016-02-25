@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     circle.cpp \
     drawpanel.cpp \
     params.cpp \
-    controlgroup.cpp
+    controlgroup.cpp \
+    jsonhandler.cpp
 
 HEADERS  += mainwindow.h \
     controlpanel.h \
@@ -26,7 +27,8 @@ HEADERS  += mainwindow.h \
     circle.h \
     drawpanel.h \
     params.h \
-    controlgroup.h
+    controlgroup.h \
+    jsonhandler.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
