@@ -4,22 +4,21 @@
 #include <QFileDialog>
 #include <iostream>
 
-void saveImage(char * jsonFile) {
-//	Circle * circle = new Circle();
-//	JsonHandler * handler = JsonHandler::getInstance();
-//	handler->parseJson(jsonFile);
-//	circle->setParams(handler->getParams());
-//	QImage * image = new QImage(handler->getPanelSize(), QImage::Format_RGB888);
-//	memset(image->bits(), 255, image->byteCount());
-//	circle->draw(image);
-//	QString filename = QFileDialog::getSaveFileName(NULL, "Save file");
-//	image->save(filename);
+void saveImage(char * jsonFile, char * filename) {
+	Lemniscate * lemniscate = new Lemniscate();
+	JsonHandler * handler = JsonHandler::getInstance();
+	handler->parseJson(jsonFile);
+	lemniscate->setParams(handler->getParams());
+	QImage * image = new QImage(handler->getPanelSize(), QImage::Format_RGB888);
+	memset(image->bits(), 255, image->byteCount());
+	lemniscate->draw(image);
+	image->save(filename);
 }
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     MainWindow w;
-	if (argc > 2) {
+	if (argc != 1 && argc != 3) {
 		std::cout << "Usage : " << argv[0] << " [FILE]" << std::endl;
 		return 1;
 	}
@@ -27,7 +26,7 @@ int main(int argc, char *argv[]) {
 		w.show();
 		return a.exec();
 	}
-	saveImage(argv[1]);
+	saveImage(argv[1], argv[2]);
 	return 0;
 }
 
