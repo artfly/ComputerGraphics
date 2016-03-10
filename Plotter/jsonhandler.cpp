@@ -1,7 +1,7 @@
 #include "jsonhandler.h"
 #include <QDebug>
 
-JsonHandler *JsonHandler::instance = 0;
+JsonHandler * JsonHandler::instance = 0;
 
 JsonHandler::JsonHandler() {}
 
@@ -12,55 +12,60 @@ JsonHandler * JsonHandler::getInstance() {
 }
 
 void JsonHandler::parseJson(QString path) {
-//	QFile file;
-//	file.setFileName(path);
-//	file.open(QIODevice::ReadOnly | QIODevice::Text);
-//	QJsonDocument document = QJsonDocument::fromJson(file.readAll());
-//	file.close();
-//	QJsonObject jsonObject = document.object();
+	QFile file;
+	file.setFileName(path);
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	QJsonDocument document = QJsonDocument::fromJson(file.readAll());
+	file.close();
+	QJsonObject jsonObject = document.object();
 
-//	QJsonArray jsonArray = jsonObject["circles"].toArray();
-//	QJsonObject circle = jsonArray.at(0).toObject();
-//	QJsonObject position = circle["position"].toObject();
-//	int R = circle["R"].toInt();
-//	int x = position["x"].toInt();
-//	int y = position["y"].toInt();
-//	params = new Params(x, y, R);
+	QJsonObject lemniscate = jsonObject["lemniscate"].toObject();
 
-//	QJsonObject panel = jsonObject["panel"].toObject();
-//	QJsonObject jsonSize = panel["size"].toObject();
+	QJsonObject focus1 = lemniscate["focus1"].toObject();
+	QJsonObject focus2 = lemniscate["focus2"].toObject();
+	int x1 = focus1["x"].toInt();
+	int y1 = focus1["y"].toInt();
+	int x2 = focus2["x"].toInt();
+	int y2 = focus2["y"].toInt();
+	qDebug() << y1;
+	params = new Params(x1, y1, x2, y2);
 
-//	size.setHeight(jsonSize["y"].toInt());
-//	size.setWidth(jsonSize["x"].toInt());
+	QJsonObject panel = jsonObject["panel"].toObject();
+	QJsonObject jsonSize = panel["size"].toObject();
+
+	size.setHeight(jsonSize["width"].toInt());
+	size.setWidth(jsonSize["height"].toInt());
 }
 
 void JsonHandler::saveJson(QString filename, Params * position, QSize panelSize) {
-//	QFile file;
-//	file.setFileName(filename);
-//	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	QFile file;
+	file.setFileName(filename);
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
 
-//	QJsonObject jsonPosition;
-//	QJsonObject jsonCircle;
-//	QJsonArray jsonCircles;
-//	jsonPosition["x"] = position->getX();
-//	jsonPosition["y"] = position->getY();
-//	qWarning() << (position->getR());
-//	jsonCircle["R"] = position->getR();
-//	jsonCircle["position"] = jsonPosition;
-//	jsonCircles.append(jsonCircle);
+	QJsonObject jsonLemniscate;
+	QJsonObject jsonFocus1;
+	QJsonObject jsonFocus2;
 
-//	QJsonObject jsonPanel;
-//	QJsonObject jsonSize;
-//	jsonSize["x"] = panelSize.width();
-//	jsonSize["y"] = panelSize.height();
-//	jsonPanel["size"] = jsonSize;
+	jsonFocus1["x"] = position->getX1();
+	jsonFocus1["y"] = position->getY1();
+	jsonFocus2["x"] = position->getX2();
+	jsonFocus2["y"] = position->getY2();
 
-//	QJsonObject json;
-//	json["circles"] = jsonCircles;
-//	json["panel"] = jsonPanel;
+	jsonLemniscate["focus1"] = jsonFocus1;
+	jsonLemniscate["focus2"] = jsonFocus2;
 
-//	QJsonDocument document(json);
-//	file.write(document.toJson());
+	QJsonObject jsonPanel;
+	QJsonObject jsonSize;
+	jsonSize["width"] = panelSize.width();
+	jsonSize["height"] = panelSize.height();
+	jsonPanel["size"] = jsonSize;
+
+	QJsonObject json;
+	json["lemniscate"] = jsonLemniscate;
+	json["panel"] = jsonPanel;
+
+	QJsonDocument document(json);
+	file.write(document.toJson());
 }
 
 Params * JsonHandler::getParams() {
