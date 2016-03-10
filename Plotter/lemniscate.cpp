@@ -105,17 +105,15 @@ QPoint Lemniscate::drawHalf(const QPoint & center, const QPoint & restrictedDire
 
 
 QVector<QPoint> Lemniscate::createDirections(const QPoint & restrictedDirection) {
-	int possibleDirections = 8;
-	if (restrictedDirection != QPoint{0, 0}) {
-		possibleDirections--;
-	}
 	QVector<QPoint> directions;
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1	; j++) {
-			if ((i == 0 && j == 0) || (restrictedDirection.x() == i && restrictedDirection.y() == j)
-					|| (restrictedDirection.x() == -i && restrictedDirection.y() == -j)) {
+			if ((i == 0 && j == 0)) {
 				continue;
 			}
+			if (restrictedDirection != QPoint(0, 0) &&
+					((restrictedDirection.x() != -i) || (restrictedDirection.y() != -j)))
+				continue;
 			directions.push_back(QPoint{i, j});
 		}
 	}
