@@ -2,18 +2,19 @@
 #include <QApplication>
 #include <QImage>
 #include <QFileDialog>
+#include <QDebug>
 #include <iostream>
 
 void saveImage(char * jsonFile) {
 	Circle * circle = new Circle();
 	JsonHandler * handler = JsonHandler::getInstance();
-	handler->parseJson(jsonFile);
+    handler->parseJson(jsonFile);
 	circle->setParams(handler->getParams());
 	QImage * image = new QImage(handler->getPanelSize(), QImage::Format_RGB888);
 	memset(image->bits(), 255, image->byteCount());
 	circle->draw(image);
 	QString filename = QFileDialog::getSaveFileName(NULL, "Save file");
-	image->save(filename);
+    qDebug() << image->save(filename);
 }
 
 int main(int argc, char *argv[]) {

@@ -23,7 +23,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     controlpanel.h \
-    ControlGroup.h \
     circle.h \
     drawpanel.h \
     params.h \
@@ -32,7 +31,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
-    ControlGroup.ui \
     drawpanel.ui \
     controlgroup.ui
 

@@ -14,20 +14,13 @@ public slots:
 public:
 	void draw(QImage* pBackBuffer);
 	void setParams(Params * params);
-
 private:
-	QPair<int, int> buf2coord(int point);
-	int coord2buf(QPair<int, int> coord);
-	int findIntersection(int border);
+     void drawLine(int xFrom, int xTo, int y);
 	Params * params;
 	QImage * pBackBuffer;
+    uchar * pubBuffer;
 	int width;
-	int height;
-	int x0;
-	int y0;
-	int ycenter;
-	int xcenter;
-	int r;
+    int height;
 	int lineBytes;
 };
 
