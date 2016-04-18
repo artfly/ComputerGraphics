@@ -54,7 +54,9 @@ void Font::drawBezier (QPoint start, QPoint control, QPoint end) {
         curend -= deltaend;
         curdelta = (curend - curstart) / coef;
         cur = curstart + t * curdelta;
-        drawPoint(cur / coef);
+        if (params->getOutline()) {
+            drawPoint(cur / coef);
+        }
     }
 }
 

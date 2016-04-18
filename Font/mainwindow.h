@@ -2,8 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QWidget>
+#include <QSize>
 #include <QString>
+#include <QWidget>
 #include "controlpanel.h"
 #include "drawpanel.h"
 #include "params.h"
@@ -20,7 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void saveImage(QString path);
     ~MainWindow();
-    void openFile(char * filename);
+    void openFile(char * filename, QSize * panelSize);
 public slots:
 private slots:
     void saveFile();

@@ -56,9 +56,10 @@ void MainWindow::saveFile() {
 //                                                    QSize(drawPanel->width(), drawPanel->height()));
 }
 
-void MainWindow::openFile(char * filename) {
+void MainWindow::openFile(char * filename, QSize * panelSize) {
     JsonHandler * handler = JsonHandler::getInstance();
     handler->parseJson(filename);
+    resize(* panelSize);
     drawPanel->setGlyphs(handler->getGlyphs());
     controlPanel->setParams(handler->getParams());
 }
