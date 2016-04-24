@@ -20,6 +20,7 @@ public:
     Params * getParams() const;
 public slots:
     void setValue();
+    void shift(QPoint shift);
 signals:
     void paramsChanged(Params * params);
 private:

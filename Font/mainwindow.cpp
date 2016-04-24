@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createMenus();
     resize(800, 600);
+    setMouseTracking(true);
 }
 
 void MainWindow::createPanels() {
@@ -35,6 +36,8 @@ void MainWindow::createPanels() {
     drawPanel = new DrawPanel();
     QObject::connect(controlPanel, SIGNAL(paramsChanged(Params *)),
                      drawPanel, SLOT(redraw(Params *)));
+    QObject::connect(drawPanel, SIGNAL(glyphShifted(QPoint)),
+                     controlPanel, SLOT(shift(QPoint)));
     controlPanel->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 }
 

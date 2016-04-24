@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QImage>
 #include <QString>
+#include <QMouseEvent>
 #include "params.h"
 #include "font.h"
 
@@ -19,14 +20,16 @@ public:
     void setGlyphs(const std::vector<std::vector<GlyphPoint *> > & glyphs);
     ~DrawPanel();
 signals:
-
+    void glyphShifted(QPoint shift);
 public slots:
     void redraw(Params * params);
 protected:
     void paintEvent(QPaintEvent *event);
+    void mouseMoveEvent(QMouseEvent * event);
+    void mousePressEvent(QMouseEvent * event);
 private:
     static constexpr const char * PANEL_NAME = "Draw Panel";
-
+    QPoint startPosition;
     Font * font;
     Ui::DrawPanel * ui;
 };

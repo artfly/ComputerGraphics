@@ -43,11 +43,16 @@ void ControlPanel::createControls() {
     this->setLayout(layout);
 }
 
-
 void ControlPanel::setValue() {
         Params * params = new Params(xControls->getValue(), yControls->getValue(),
                                      scaleControls->getValue(), fillControls->getValue(), outlineControls->getValue());
         emit paramsChanged(params);
+}
+
+void ControlPanel::shift(QPoint shift) {
+    Params * params = getParams();
+    setParams(new Params(params->getX() + shift.x(), params->getY() + shift.y(), params->getScale(),
+                         params->getFill(), params->getOutline()));
 }
 
 void ControlPanel::setParams(Params * params) {

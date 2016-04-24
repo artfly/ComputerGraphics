@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include <QSize>
 #include <QString>
+#include <QMouseEvent>
 #include <QWidget>
 #include "controlpanel.h"
 #include "drawpanel.h"

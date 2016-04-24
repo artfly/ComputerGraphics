@@ -33,3 +33,20 @@ void DrawPanel::setGlyphs(const std::vector<std::vector<GlyphPoint *> > & glyphs
     font->setGlyphs(glyphs);
     update();
 }
+
+void DrawPanel::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+       startPosition = event->pos();
+    }
+}
+
+void DrawPanel::mouseMoveEvent(QMouseEvent * event) {
+    if (!(event->buttons() & Qt::LeftButton))
+            return;
+    if ((event->pos() - startPosition).manhattanLength() < QApplication::startDragDistance())
+            return;
+    QPoint shift = event->pos() - startPosition;
+    startPosition = event->pos();
+    emit glyphShifted(shift);
+}
