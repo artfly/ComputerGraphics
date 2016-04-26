@@ -12,7 +12,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     controlpanel.cpp \
     lemniscate.cpp \
     drawpanel.cpp \
@@ -22,7 +22,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     controlpanel.h \
-    ControlGroup.h \
     lemniscate.h \
     drawpanel.h \
     params.h \

@@ -10,7 +10,7 @@ public:
 	int getX2() const;
 	int getY2() const;
 private:
-	QVector<int> params;
+    std::vector<int> params;
 };
 
 #endif // PARAMS_H

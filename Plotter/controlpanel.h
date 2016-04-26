@@ -26,7 +26,7 @@ private:
 	static const int DEFAULT_X1 = -4;
 	static const int DEFAULT_X2 = 3;
 	static const int DEFAULT_Y1 = 1;
-	static const int DEFAULT_Y2 = 1;
+    static const int DEFAULT_Y2 = -1;
     static const int FROM_COORD = -1000;
     static const int TO = 1000;
 

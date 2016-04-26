@@ -18,18 +18,24 @@ public:
 	void setParams(Params * params);
 
 private:
-	static const int FOCUS_RADIUS = 2;
+    static const int FOCUS_RADIUS = 5;
 
 	int coord2buf(int coord, int coef, int shift);
-
-	void drawAxes();
-	QPoint drawHalf(const QPoint & center,const QPoint & restrictedDirection = QPoint(0, 0));
-	QVector<QPoint> createDirections(const QPoint & restrictedDirection = QPoint(0, 0));
+    void drawHalf(QPoint & start, QPoint & end);
+    std::vector<QPoint> createDirections(QPoint & curdir);
+    std::vector<QPoint> createFirstDirections(QPoint & start, QPoint & end);
+    QPoint chooseDirection(QPoint & curpoint, QPoint & curdir);
+    QPoint findStart(QPoint left, QPoint right);
+    void drawAxes();
 	long long error(const QPoint &p);
-	long long sqr(int x);
-	void drawPoint(const QPoint & point, int radius = 1);
+    long long sqr(long long x);
+    void drawPoint(const QPoint & p, int r = 1, std::array<uchar, 3> color = {0, 0, 0});
 	Params * params;
-	QImage * pBackBuffer;
+    int width;
+    int height;
+    int lineBytes;
+    uchar * pubBuffer;
+    QImage * pBackBuffer;
 };
 
 #endif // LEMNISCATE_H
