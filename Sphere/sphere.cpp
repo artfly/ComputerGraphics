@@ -20,9 +20,9 @@ void Sphere::draw(QImage *pBackBuffer) {
 
    std::pair<double, double> uv;
    QColor color;
-   for (int x = -r; x <= r; x++) {
-       for (int y = -r; y <= r; y++) {
-           if (r * r < (x * x + y * y)) {
+   for (int x = 0; x < width; x++) {
+       for (int y = 0; y < height; y++) {
+           if (4 * r * r < (2 * y - height) * (2 * y - height) + (2 * x - width) * (2 * x - width)) {
                continue;
            }
            uv = getTextureCoordinates({x, y}, r);
@@ -35,10 +35,10 @@ void Sphere::draw(QImage *pBackBuffer) {
 std::pair<double, double> Sphere::getTextureCoordinates(std::pair<int, int> p, int r) {
     double x = p.first;
     double y = p.second;
-    double z = std::sqrt(r * r - x * x - y * y);
+    double z = std::sqrt(4 * r * r - (2 * x - width) * (2 * x - width) - (2 * y - height) * (2 * y - height));
 
-    double theta = std::acos(y / r);
-    double phi = std::atan2(z, x);
+    double theta = std::acos((2 * y - height) / (2 * r));
+    double phi = std::atan2(z, 2 * x - width);
 
     double u = 1 - std::fmod(phi + M_PI, 2 * M_PI) / (2 * M_PI);
     double v = 1 - std::fmod(theta, M_PI) / M_PI;
@@ -59,20 +59,18 @@ QColor Sphere::getTextureColor(std::pair<double, double> uv) {
         y = std::fmod(y + image->height(), image->height());
 
         QPoint p1 = {static_cast<int>(std::floor(x)), static_cast<int>(std::floor(y))};
-        QPoint p4 = {static_cast<int>(std::ceil(x + 1)) % image->width(),
-                     static_cast<int>(std::ceil(y + 1)) % image->height()};
+        QPoint p4 = {static_cast<int>(std::ceil(x)) % image->width(),
+                     static_cast<int>(std::ceil(y)) % image->height()};
         QPoint p2 = {p4.x(), p1.y()};
         QPoint p3 = {p1.x(), p4.y()};
 
         std::pair<double, double> fractionals = {x - p1.x(), y - p1.y()};
 
         auto channel = [](int first, int second, double fract) {
-            if (first < second) std::swap(first, second);
             return static_cast<int>(first + fract * (second - first));
         };
-
         QVector<QColor> colors = {image->pixelColor(p1), image->pixelColor(p2),
-                                  image->pixelColor(p3), image->pixelColor(p3)};
+                                  image->pixelColor(p3), image->pixelColor(p4)};
 
         QColor f1 = {channel(colors.at(0).red(), colors.at(2).red(), fractionals.second),
                      channel(colors.at(0).green(), colors.at(2).green(), fractionals.second),
@@ -88,20 +86,7 @@ QColor Sphere::getTextureColor(std::pair<double, double> uv) {
 }
 
 void Sphere::drawPoint(const QPoint & p, int r, std::array<uchar, 3> color) {
-    if (std::abs(p.x()) + r >= width >> 1 || std::abs(p.y()) + r >= height >> 1)
-            return;
-    int centerX = pBackBuffer->width() >> 1;
-    int centerY = pBackBuffer->height() >> 1;
-    auto coord2buf = [] (int coordinate, int factor, int shift) {
-        return coordinate * factor + shift;
-    };
-
-    for (int i = -r; i < r; i++) {
-        for (int j = -r; j < r; j++) {
-            std::copy(color.begin(), color.end(),
-                      pubBuffer + 3 * coord2buf(p.x() + i, 1, centerX) + lineBytes * coord2buf(p.y() + j, -1, centerY));
-        }
-    }
+    std::copy(color.begin(), color.end(), pubBuffer + 3 * p.x() + lineBytes * p.y());
 }
 
 void Sphere::setParams(Params * params) {
