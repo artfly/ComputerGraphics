@@ -17,37 +17,49 @@ void Sphere::draw(QImage *pBackBuffer) {
 
    double scale = static_cast<double>(params->getScale());
    int r = RADIUS * (1 + scale / (scale > 0 ? 100 : 1000));
+   double y;
 
    std::pair<double, double> uv;
-   QColor color;
+   QColor color = {0, 0, 0};
+
    for (int x = 0; x < width; x++) {
-       for (int y = 0; y < height; y++) {
-           if (4 * r * r < (2 * y - height) * (2 * y - height) + (2 * x - width) * (2 * x - width)) {
+       for (int z = r; z <= height - r; z++) {
+           if (std::abs(2 * x - width) > 2 * r) {
                continue;
            }
+           y = z - std::sqrt(r * r - (x - width / 2) * (x - width / 2));
            uv = getTextureCoordinates({x, y}, r);
            color = getTextureColor(uv);
-           drawPoint({x, y}, 1, {color.red(), color.green(), color.blue()});
+           drawPoint({width - x, height - y}, {color.red(), color.green(), color.blue()});
+       }
+   }
+
+   for (int x = 0; x < width; x++) {
+       for (int y = 0; y < height; y++) {
+           if (4 * r * r < (2 * x - width) * (2 * x - width) + 4 * (y - r) * (y - r)) {
+               continue;
+           }
+           uv = getTextureCoordinates({x, height - y}, r);
+           color = getTextureColor(uv);
+           drawPoint({width - x, y}, {color.red(), color.green(), color.blue()});
        }
    }
 }
 
-std::pair<double, double> Sphere::getTextureCoordinates(std::pair<int, int> p, int r) {
+std::pair<double, double> Sphere::getTextureCoordinates(std::pair<double, double> p, int r) {
     double x = p.first;
-    double y = p.second;
-    double z = std::sqrt(4 * r * r - (2 * x - width) * (2 * x - width) - (2 * y - height) * (2 * y - height));
+    double y = std::sqrt(4 * r * r - (2 * x - width) * (2 * x - width));
 
-    double theta = std::acos((2 * y - height) / (2 * r));
-    double phi = std::atan2(z, 2 * x - width);
+    double phi = std::atan2(2 * y, 2 * x - width);
 
-    double u = 1 - std::fmod(phi + M_PI, 2 * M_PI) / (2 * M_PI);
-    double v = 1 - std::fmod(theta, M_PI) / M_PI;
-    return {u, v};
+    double u = 1 - p.second / height;
+    double v = 1 - (2 * phi + M_PI) / (2 * M_PI);
+    return {v, u};
 }
 
 QColor Sphere::getTextureColor(std::pair<double, double> uv) {
     if (params->getFilter() == "Nearest") {
-        int x = std::round(0.5 +uv.first * image->width() + params->getX());
+        int x = std::round(0.5 + uv.first * image->width() + params->getX());
         int y = std::round(0.5 + uv.second * image->height() + params->getY());
         x = x % image->width() + (x > 0 ? 0 : (image->width() - 1));
         y = y % image->height() + (y > 0 ? 0 : (image->height() - 1));
@@ -85,7 +97,7 @@ QColor Sphere::getTextureColor(std::pair<double, double> uv) {
     }
 }
 
-void Sphere::drawPoint(const QPoint & p, int r, std::array<uchar, 3> color) {
+void Sphere::drawPoint(const QPoint & p, std::array<int, 3> color) {
     std::copy(color.begin(), color.end(), pubBuffer + 3 * p.x() + lineBytes * p.y());
 }
 

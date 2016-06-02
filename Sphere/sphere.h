@@ -27,9 +27,9 @@ class Sphere : public QObject {
     QImage * pBackBuffer;
     QImage * image;
     Params * params;
-    void drawPoint(const QPoint & p, int r = 1, std::array<uchar, 3> color = {0, 0, 0});
+    void drawPoint(const QPoint & p, std::array<int, 3> color = {0, 0, 0});
     QColor getTextureColor(std::pair<double, double> uv);
-    std::pair<double, double> getTextureCoordinates(std::pair<int, int> p, int r);
+    std::pair<double, double> getTextureCoordinates(std::pair<double, double> p, int r);
 };
 
 #endif // SPHERE_H
